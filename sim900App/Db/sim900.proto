@@ -1,0 +1,41 @@
+
+InTerminator=CR LF;
+OutTerminator=CR;
+ReadTimeout=1200;
+
+# SIM900 commands
+idn              { out "*idn?"                           ;in "%50c"                 ; }
+resetSerial      { out "srst"                                                       ; }
+getStatus        { out "*stb?"                           ;in "%i"                   ; }
+
+# SIM960 commands
+disconnect1      { out "stop"                                                       ; }
+idn1             { out "conn 1, \"stop\" \r *idn?"       ;in "%50c"    ; out "stop" ; }
+getStatus1       { out "conn 1, \"stop\" \r incr?"       ;in "%i"      ; out "stop" ; }
+getPStatus       { out "conn 1, \"stop\" \r pctl?"       ;in "%{0|1}"  ; out "stop" ; }
+getIStatus       { out "conn 1, \"stop\" \r ictl?"       ;in "%{0|1}"  ; out "stop" ; }
+getDStatus       { out "conn 1, \"stop\" \r dctl?"       ;in "%{0|1}"  ; out "stop" ; }
+getOStatus       { out "conn 1, \"stop\" \r octl?"       ;in "%{0|1}"  ; out "stop" ; }
+getOutputState   { out "conn 1, \"stop\" \r aman?"       ;in "%{0|1}"  ; out "stop" ; }
+getSetpointState { out "conn 1, \"stop\" \r inpt?"       ;in "%{0|1}"  ; out "stop" ; }
+getPGain         { out "conn 1, \"stop\" \r gain?"       ;in "%f"      ; out "stop" ; }
+getIGain         { out "conn 1, \"stop\" \r intg?"       ;in "%f"      ; out "stop" ; }
+getDGain         { out "conn 1, \"stop\" \r derv?"       ;in "%f"      ; out "stop" ; }
+getOffset        { out "conn 1, \"stop\" \r ofst?"       ;in "%f"      ; out "stop" ; }
+getUlim          { out "conn 1, \"stop\" \r ulim?"       ;in "%f"      ; out "stop" ; }
+getLlim          { out "conn 1, \"stop\" \r llim?"       ;in "%f"      ; out "stop" ; }
+getSmon          { out "conn 1, \"stop\" \r smon?"       ;in "%f"      ; out "stop" ; }
+getMmon          { out "conn 1, \"stop\" \r mmon?"       ;in "%f"      ; out "stop" ; }
+getEmon          { out "conn 1, \"stop\" \r emon?"       ;in "%f"      ; out "stop" ; }
+getOmon          { out "conn 1, \"stop\" \r omon?"       ;in "%f"      ; out "stop" ; }
+getSetpoint      { out "conn 1, \"stop\" \r setp?"       ;in "%f"      ; out "stop" ; }
+#
+setOutputState   { out "send 1,\"aman %{0|1}\r\""        ; }
+setPStatus       { out "send 1,\"pctl %{0|1}\r\""        ; }
+setIStatus       { out "send 1,\"ictl %{0|1}\r\""        ; }
+setDStatus       { out "send 1,\"dctl %{0|1}\r\""        ; }
+setOStatus       { out "send 1,\"octl %{0|1}\r\""        ; }
+setPGain         { out "send 1,\"gain %f\r\""            ; }
+setIGain         { out "send 1,\"intg %f\r\""            ; }
+setDGain         { out "send 1,\"derv %f\r\""            ; }
+setOffset        { out "send 1,\"ofst %f\r\""            ; }

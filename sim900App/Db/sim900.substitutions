@@ -1,0 +1,5 @@
+file sim900.template {
+pattern {DELAY1,  P0,    I0, D0, OFFSET, LLIM, ULIM}
+        { 0.250, -10, 25000,  0,      0, -3.0,  3.0}
+}
+

@@ -1,0 +1,467 @@
+record( stringin, "$(P):SI:IOCNAME") {
+  field( PINI, "YES")
+  field( VAL,  "$(IOCNAME)")
+}
+## SIM 900 #########################################
+record( bo, "$(P):RESET:SERIAL"){
+  field( DESC, "SIM reset, all ports")
+  field( DTYP, "stream")
+  field( OUT,  "@$(PROTOFILE) resetSerial $(L) $(A)")
+  field( PINI, "NO")
+}
+record( waveform, "$(P):IDN"){
+  field( DESC, "SCPI ID String")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) idn $(L) $(A)")
+  field( NELM, "60")
+  field( FTVL, "CHAR")
+  #field( PINI, "YES")
+}
+record( mbbi, "$(P):STATUS"){
+  field( DESC, "Status byte")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getStatus $(L) $(A)")
+  field( ZRVL, "0")
+  field( ONVL, "1")
+  field( TWVL, "2")
+  field( THVL, "4")
+  field( FRVL, "8")
+  field( FVVL, "16")
+  field( SXVL, "32")
+  field( SVVL, "64")
+  field( EIVL, "128")
+  field( ZRST, "OK")
+  field( ONST, "Port data pending")
+  field( TWST, "Port flow control")
+  field( THST, "Comm Error")
+  field( FRST, "Idle")
+  field( FVST, "Message Available")
+  field( SXST, "Event Status")
+  field( SVST, "Master Summary")
+  field( EIST, "Sim Status")
+  #field( ONSV, "MAJOR")
+  #field( TWSV, "MAJOR")
+  field( THSV, "MAJOR")
+  #field( FRSV, "MAJOR")
+  #field( FVSV, "MAJOR")
+}
+## SIM 960 ################################################
+record( bo, "$(P):P1:DISCONNECT"){
+  field( DESC, "Disconnect port 1")
+  field( DTYP, "stream")
+  field( OUT,  "@$(PROTOFILE) disconnect1 $(L) $(A)")
+}
+record( waveform, "$(P):P1:IDN"){
+  field( DESC, "SCPI ID String, Port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) idn1 $(L) $(A)")
+  field( NELM, "60")
+  field( FTVL, "CHAR")
+  #field( PINI, "YES")
+}
+record( mbbi, "$(P):P1:STATUS"){
+  field( DESC, "Status, Port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getStatus1 $(L) $(A)")
+  field( ZRVL, "0")
+  field( ONVL, "1")
+  field( TWVL, "2")
+  field( THVL, "4")
+  field( FRVL, "8")
+  field( FVVL, "16")
+  field( ZRST, "OK")
+  field( ONST, "Overload")
+  field( TWST, "Upper limit")
+  field( THST, "Lower limit")
+  field( FRST, "Antiwind")
+  field( FVST, "Rstop")
+  field( ONSV, "MAJOR")
+  field( TWSV, "MAJOR")
+  field( THSV, "MAJOR")
+  field( FRSV, "MAJOR")
+  field( FVSV, "MAJOR")
+}
+record( bi, "$(P):P1:P:STATUS"){
+  field( DESC, "Proportional term status, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getPStatus $(L) $(A)")
+  field( ZNAM, "OFF")
+  field( ONAM, "ON")
+  field( PINI, "NO")
+}
+record( bi, "$(P):P1:I:STATUS"){
+  field( DESC, "Integral term status, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getIStatus $(L) $(A)")
+  field( ZNAM, "OFF")
+  field( ONAM, "ON")
+  field( PINI, "NO")
+}
+record( bi, "$(P):P1:D:STATUS"){
+  field( DESC, "Derivative term status, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getDStatus $(L) $(A)")
+  field( ZNAM, "OFF")
+  field( ONAM, "ON")
+  field( PINI, "NO")
+}
+record( bi, "$(P):P1:O:STATUS"){
+  field( DESC, "Output offset status, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getOStatus $(L) $(A)")
+  field( ZNAM, "OFF")
+  field( ONAM, "ON")
+}
+# Output state ----------------------------------------
+record( bo, "$(P):P1:OUTPUT:STATE:SC"){
+  field( DESC, "Output state, port 1")
+  field( OUT,  "$(P):P1:OUTPUT:STATE PP")
+  field( ZNAM, "Manual")
+  field( ONAM, "PID Control")
+}
+record( bo, "$(P):P1:OUTPUT:STATE"){
+  field( SDIS, "$(P):P1:OUTPUT:STATE:Sync.PACT")
+  field( DISV, "1")
+  field( DTYP, "stream")
+  field( OUT,  "@$(PROTOFILE) setOutputState $(L) $(A)")
+}
+record( bi, "$(P):P1:OUTPUT:STATE:RBV"){
+  field( DESC, "Output state, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getOutputState $(L) $(A)")
+  field( ZNAM, "Manual")
+  field( ONAM, "PID Control")
+  field( FLNK, "$(P):P1:OUTPUT:STATE:Sync")
+}
+record( bo, "$(P):P1:OUTPUT:STATE:Sync"){
+  field( DOL,  "$(P):P1:OUTPUT:STATE:RBV NPP")
+  field( OMSL, "closed_loop")
+  field( OUT,  "$(P):P1:OUTPUT:STATE:SC PP")
+}
+# ------------------------------------------------------
+record( bi, "$(P):P1:SETPOINT:STATE"){
+  field( DESC, "Setpoint state, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getSetpointState $(L) $(A)")
+  field( ZNAM, "Internal")
+  field( ONAM, "External")
+}
+# Proportional gain ------------------------------------
+record( ao, "$(P):P1:P:GAIN:SC"){
+  field( DESC, "Proportional gain, port 1")
+  field( OUT,  "$(P):P1:P:GAIN PP")
+  field( PREC, "2")
+  field( DRVH, "1E3")
+  field( DRVL, "-1E3")
+  field( HOPR, "1E3")
+  field( LOPR, "-1E3")
+}
+record( ao, "$(P):P1:P:GAIN"){
+  field( SDIS, "$(P):P1:P:GAIN:Sync.PACT")
+  field( DISV, "1")
+  field( DTYP, "stream")
+  field( OUT,  "@$(PROTOFILE) setPGain $(L) $(A)")
+  field( PREC, "2")
+}
+record( ai, "$(P):P1:P:GAIN:RBV"){
+  field( DESC, "Proportional gain, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getPGain $(L) $(A)")
+  field( PREC, "2")
+  field( EGU,  "V/V")
+  field( HIHI, "0")
+  field( LOLO, "-3.0E1")
+  field( HIGH, "0")
+  field( LOW,  "-2.4E1")
+  field( HHSV, "MAJOR")
+  field( LLSV, "MAJOR")
+  field( HSV,  "MINOR")
+  field( LSV,  "MINOR")
+  field( FLNK, "$(P):P1:P:GAIN:Sync")
+}
+record( ao, "$(P):P1:P:GAIN:Sync"){
+  field( DOL,  "$(P):P1:P:GAIN:RBV NPP")
+  field( OMSL, "closed_loop")
+  field( OUT,  "$(P):P1:P:GAIN:SC PP")
+  field( PREC, "2")
+}
+#-------------------------------------------------
+# Integral Gain -----------------------------------
+record( ao, "$(P):P1:I:GAIN:SC"){
+  field( DESC, "Integral gain, port 1")
+  field( OUT,  "$(P):P1:I:GAIN PP")
+  field( PREC, "2")
+  field( DRVH, "5E5")
+  field( DRVL, "1E-2")
+  field( HOPR, "5E5")
+  field( LOPR, "1E-2")
+}
+record( ao, "$(P):P1:I:GAIN"){
+  field( SDIS, "$(P):P1:I:GAIN:Sync.PACT")
+  field( DISV, "1")
+  field( DTYP, "stream")
+  field( OUT,  "@$(PROTOFILE) setIGain $(L) $(A)")
+  field( PREC, "2")
+}
+record( ai, "$(P):P1:I:GAIN:RBV"){
+  field( DESC, "Integral gain, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getIGain $(L) $(A)")
+  field( PREC, "2")
+  field( EGU,  "V/(V*s)")
+  field( HIHI, "4.8E4")
+  field( LOLO, "0")
+  field( HIGH, "4.3E4")
+  field( LOW,  "0")
+  field( HHSV, "MAJOR")
+  field( LLSV, "MAJOR")
+  field( HSV,  "MINOR")
+  field( LSV,  "MINOR")
+  field( FLNK, "$(P):P1:I:GAIN:Sync")
+}
+record( ao, "$(P):P1:I:GAIN:Sync"){
+  field( DOL,  "$(P):P1:I:GAIN:RBV NPP")
+  field( OMSL, "closed_loop")
+  field( OUT,  "$(P):P1:I:GAIN:SC PP")
+  field( PREC, "2")
+}
+#--------------------------------------------------
+# Derivative Gain ---------------------------------
+record( ao, "$(P):P1:D:GAIN:SC"){
+  field( DESC, "Derivative gain, port 1")
+  field( OUT,  "$(P):P1:D:GAIN PP")
+  field( PREC, "2")
+  field( DRVH, "10")
+  field( DRVL, "1E-6")
+  field( HOPR, "10")
+  field( LOPR, "1E-6")
+}
+record( ao, "$(P):P1:D:GAIN"){
+  field( SDIS, "$(P):P1:D:GAIN:Sync.PACT")
+  field( DISV, "1")
+  field( DTYP, "stream")
+  field( OUT,  "@$(PROTOFILE) setDGain $(L) $(A)")
+  field( PREC, "2")
+}
+record( ai, "$(P):P1:D:GAIN:RBV"){
+  field( DESC, "Derivative gain, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getDGain $(L) $(A)")
+  field( PREC, "2")
+  field( EGU,  "V/(V/s)")
+  field( HIHI, "10")
+  field( LOLO, "1E-6")
+  field( HIGH, "10")
+  field( LOW,  "1E-6")
+  field( HHSV, "MAJOR")
+  field( LLSV, "MAJOR")
+  field( HSV,  "MINOR")
+  field( LSV,  "MINOR")
+  field( FLNK, "$(P):P1:D:GAIN:Sync")
+}
+record( ao, "$(P):P1:D:GAIN:Sync"){
+  field( DOL,  "$(P):P1:D:GAIN:RBV NPP")
+  field( OMSL, "closed_loop")
+  field( OUT,  "$(P):P1:D:GAIN:SC PP")
+  field( PREC, "2")
+}
+#--------------------------------------------------
+# Offset ------------------------------------------
+record( ao, "$(P):P1:OFFSET:SC"){
+  field( DESC, "Output offset, port 1")
+  field( OUT,  "$(P):P1:OFFSET PP")
+  field( PREC, "2")
+  field( DRVH, "10")
+  field( DRVL, "-10")
+  field( HOPR, "10")
+  field( LOPR, "-10")
+}
+record( ao, "$(P):P1:OFFSET"){
+  field( SDIS, "$(P):P1:OFFSET:Sync.PACT")
+  field( DISV, "1")
+  field( DTYP, "stream")
+  field( OUT,  "@$(PROTOFILE) setOffset $(L) $(A)")
+  field( PREC, "2")
+}
+record( ai, "$(P):P1:OFFSET:RBV"){
+  field( DESC, "Output offset, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getOffset $(L) $(A)")
+  field( PREC, "2")
+  field( EGU,  "V")
+  field( HIHI, "10")
+  field( LOLO, "-10")
+  field( HIGH, "9")
+  field( LOW,  "-9")
+  field( HHSV, "MAJOR")
+  field( LLSV, "MAJOR")
+  field( HSV,  "MINOR")
+  field( LSV,  "MINOR")
+  field( FLNK, "$(P):P1:OFFSET:Sync")
+}
+record( ao, "$(P):P1:OFFSET:Sync"){
+  field( DOL,  "$(P):P1:OFFSET:RBV NPP")
+  field( OMSL, "closed_loop")
+  field( OUT,  "$(P):P1:OFFSET:SC PP")
+  field( PREC, "2")
+}
+#--------------------------------------------------
+# Upper Limit -------------------------------------
+record( ai, "$(P):P1:ULIM"){
+  field( DESC, "Output upper limit, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getUlim $(L) $(A)")
+  field( EGU,  "V")
+  field( PREC, "2")
+}
+#--------------------------------------------------
+# Lower Limit -------------------------------------
+record( ai, "$(P):P1:LLIM"){
+  field( DESC, "Output lower limit, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getLlim $(L) $(A)")
+  field( EGU,  "V")
+  field( PREC, "2")
+}
+#--------------------------------------------------
+record( ai, "$(P):P1:SMON"){
+  field( DESC, "Setpoint monitor, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getSmon $(L) $(A)")
+  field( EGU,  "V")
+  field( PREC, "2")
+  field( HIHI, "3.0")
+  field( LOLO, "-3.0")
+  field( HIGH, "2.5")
+  field( LOW,  "-2.5")
+  field( HHSV, "MAJOR")
+  field( LLSV, "MAJOR")
+  field( HSV,  "MINOR")
+  field( LSV,  "MINOR")
+}
+record( ai, "$(P):P1:MMON"){
+  field( DESC, "Measure monitor, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getMmon $(L) $(A)")
+  field( EGU,  "V")
+  field( PREC, "2")
+  field( HIHI, "3.0")
+  field( LOLO, "-3.0")
+  field( HIGH, "2.5")
+  field( LOW,  "-2.5")
+  field( HHSV, "MAJOR")
+  field( LLSV, "MAJOR")
+  field( HSV,  "MINOR")
+  field( LSV,  "MINOR")
+}
+record( ai, "$(P):P1:EMON"){
+  field( DESC, "Amplified error monitor, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getEmon $(L) $(A)")
+  field( EGU,  "V")
+  field( PREC, "2")
+  field( HOPR, "10.0")
+  field( LOPR, "-10.0")
+  field( HIHI, "10.0")
+  field( LOLO, "-10.0")
+  field( HIGH, "8")
+  field( LOW,  "-8")
+  field( HHSV, "MAJOR")
+  field( LLSV, "MAJOR")
+  field( HSV,  "MINOR")
+  field( LSV,  "MINOR")
+}
+record( ai, "$(P):P1:OMON"){
+  field( DESC, "Output monitor, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getOmon $(L) $(A)")
+  field( EGU,  "V")
+  field( PREC, "2")
+  field( HIHI, "$(ULIM)")
+  field( LOLO, "$(LLIM)")
+  field( HIGH, "2.5")
+  field( LOW,  "-2.5")
+  field( HHSV, "MAJOR")
+  field( LLSV, "MAJOR")
+  field( HSV,  "MINOR")
+  field( LSV,  "MINOR")
+}
+record( ai, "$(P):P1:SETPOINT"){
+  field( DESC, "Setpoint, port 1")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getSetpoint $(L) $(A)")
+  field( EGU,  "V")
+  field( PREC, "2")
+}
+# Init and read sequences ---------------------------
+record( seq, "$(P):SEQ0"){
+  field( DESC, "Initialization sequence")
+  field( LNK1, "$(P):P1:DISCONNECT.PROC")
+  field( DLY1, "$(DELAY1)")
+  field( LNK2, "$(P):RESET:SERIAL.PROC")
+  field( DLY2, "$(DELAY1)")
+  field( LNK3, "$(P):IDN.PROC")
+  field( DLY3, "$(DELAY1)")
+  field( LNK4, "$(P):P1:IDN.PROC")
+  field( DLY4, "$(DELAY1)")
+  field( LNK5, "$(P):SEQ1.PROC")
+  field( DLY5, "$(DELAY1)")
+  field( PINI, "YES")
+  field( SCAN, "5 second")
+}
+record( seq, "$(P):SEQ1"){
+  field( DESC, "Read sequence")
+  field( LNK1, "$(P):P1:P:STATUS.PROC")
+  field( DLY1, "$(DELAY1)")
+  field( LNK2, "$(P):P1:I:STATUS.PROC")
+  field( DLY2, "$(DELAY1)")
+  field( LNK3, "$(P):P1:D:STATUS.PROC")
+  field( DLY3, "$(DELAY1)")
+  field( LNK4, "$(P):P1:O:STATUS.PROC")
+  field( DLY4, "$(DELAY1)")
+  field( LNK5, "$(P):P1:P:GAIN:RBV.PROC")
+  field( DLY5, "$(DELAY1)")
+  field( LNK6, "$(P):P1:I:GAIN:RBV.PROC")
+  field( DLY6, "$(DELAY1)")
+  field( LNK7, "$(P):P1:D:GAIN:RBV.PROC")
+  field( DLY7, "$(DELAY1)")
+  field( LNK8, "$(P):P1:OFFSET:RBV.PROC")
+  field( DLY8, "$(DELAY1)")
+  field( LNK9, "$(P):P1:OUTPUT:STATE:RBV.PROC")
+  field( DLY9, "$(DELAY1)")
+  field( LNKA,"$(P):SEQ2.PROC")
+  field( DLYA,"$(DELAY1)")
+  #field( SCAN, "5 second")
+}
+record( seq, "$(P):SEQ2"){
+  field( DESC, "Read sequence")
+  field( LNK1, "$(P):P1:ULIM.PROC")
+  field( DLY1, "$(DELAY1)")
+  field( LNK2, "$(P):P1:LLIM.PROC")
+  field( DLY2, "$(DELAY1)")
+  field( LNK3, "$(P):P1:OMON.PROC")
+  field( DLY3, "$(DELAY1)")
+  field( LNK4, "$(P):P1:SETPOINT:STATE.PROC")
+  field( DLY4, "$(DELAY1)")
+  field( LNK5, "$(P):P1:SETPOINT.PROC")
+  field( DLY5, "$(DELAY1)")
+  field( LNK6, "$(P):STATUS.PROC")
+  field( DLY6, "$(DELAY1)")
+  field( LNK7, "$(P):P1:STATUS.PROC")
+  field( DLY7, "$(DELAY1)")
+  field( LNK8, "$(P):P1:SMON.PROC")
+  field( DLY8, "$(DELAY1)")
+  field( LNK9, "$(P):P1:MMON.PROC")
+  field( DLY9, "$(DELAY1)")
+  field( LNKA,"$(P):SEQ3.PROC")
+  field( DLYA,"$(DELAY1)")
+}
+record( seq, "$(P):SEQ3"){
+  field( DESC, "Read sequence")
+  field( LNK1, "$(P):P1:EMON.PROC")
+  field( DLY1, "$(DELAY1)")
+  field( LNK2, "$(P):P1:DISCONNECT.PROC")
+  field( DLY2, "$(DELAY1)")
+  field( LNK3, "$(P):RESET:SERIAL.PROC")
+  field( DLY3, "$(DELAY1)")
+}
